@@ -1,0 +1,116 @@
+[project]
+name = "rag-from-scratch"
+version = "0.1.0"
+description = "Minimal RAG implementation - NumPy + LLM API only"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0.0",
+    "openai>=1.0.0",
+    "sentence-transformers>=5.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.4.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_from_scratch"]
+
+
+[tool.interrogate]
+fail-under=100
+exclude = ["tests", "build", "dist", "tmp", ".venv", ".env", ".ruff_cache"]
+ignore-module = true
+ignore-init-method = true
+ignore-regex = ["^_execute_callbacks"]
+verbose = 2
+omit-covered-files = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["__pycache__"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "Q",    # flake8-quotes
+    "A",    # prevent using keywords that clobber python builtins
+    "ISC",  # implicit string concatenation
+    "UP",   # alert you when better syntax is available in your python version, pyupgrade
+    "RUF",  # the ruff developer's own rules
+    "D",    # pydocstyle
+    "I",    # isort
+    "ANN", # flake8-annotations - Missing type annotation for function argument
+    "T20", # flake8-print - print and pprint are not allowed
+]
+ignore = [
+    "E501",
+    "A001",  # Ignore shadowing of python builtin words
+    "D100",  # Missing docstring in public module
+    "D101",  # Missing docstring in public class
+    "D102",  # Missing docstring in public method
+    "D103",  # Missing docstring in public function
+    "D104",  # Missing docstring in public package
+    "D105",  # Missing docstring in magic method
+    "D205",  # 1 blank line required between summary line and description
+    "D209",  # Multi-line docstring
+    "D210",  # No whitespaces allowed surrounding docstring text
+    "D400",  # First line should end with a period
+    "D401",  # First line should be in imperative mood
+    "D404",  # First word of the docstring should not be `This`
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["ANN401", "ANN201", "ANN202", "ANN001"]
+"model_registry/core/interfaces.py" = ["ANN401"]
+"model_registry/core/models.py" = ["ANN401"]
+"main.py" = ["T20"]
+
+# Docstring formatting options
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = 100
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "security: marks tests related to model and experiment security risks.",
+]
+addopts = ["--durations=0", "--strict-markers", "--doctest-modules"]
+filterwarnings = ["ignore::DeprecationWarning", "ignore::UserWarning"]
+
+
+[tool.pyright]
+include = ["model_registry"]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+
+reportMissingTypeArgument = "warning"
+reportUnnecessaryCast = "warning"
+reportUnusedIgnoreComment = "warning"
+reportUnreachable = "warning"
+reportUnknownMemberType = "warning"
+reportUnknownArgumentType = "warning"
+
+[[tool.pyright.executionEnvironments]]
+root = "tests"
+typeCheckingMode = "basic"
+reportMissingTypeArgument = "warning"
+reportUnknownParameterType = "warning"
+reportMissingParameterType = "warning"
+reportUnknownArgumentType = "warning"
+reportPrivateUsage = "warning"
