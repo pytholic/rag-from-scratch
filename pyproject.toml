@@ -5,8 +5,11 @@ description = "Minimal RAG implementation - NumPy + LLM API only"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "google-genai>=1.59.0",
     "numpy>=2.0.0",
+    "ollama>=0.6.1",
     "openai>=1.0.0",
+    "python-dotenv>=1.2.1",
     "sentence-transformers>=5.2.0",
 ]
 
