@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from src.embedder import Embedder
+from src.utils import similarity
 
 
 class TestEmbedder:
@@ -46,8 +47,8 @@ class TestEmbedder:
         emb1 = embedder.embed(text)
         emb2 = embedder.embed(text)
 
-        similarity = embedder.similarity(emb1, emb2)
-        assert 0.99 <= similarity <= 1.0
+        sim = similarity(emb1, emb2)
+        assert 0.99 <= sim <= 1.0
 
 
     @pytest.mark.slow
@@ -56,8 +57,8 @@ class TestEmbedder:
         emb1 = embedder.embed("Machine learning is fascinating.")
         emb2 = embedder.embed("The weather is nice today.")
 
-        similarity = embedder.similarity(emb1, emb2)
-        assert 0.0 <= similarity < 0.5  # Should be relatively low
+        sim = similarity(emb1, emb2)
+        assert 0.0 <= sim < 0.5  # Should be relatively low
 
 
     @pytest.mark.slow
@@ -66,8 +67,8 @@ class TestEmbedder:
         emb1 = embedder.embed("Machine learning and AI are related.")
         emb2 = embedder.embed("Artificial intelligence and ML are connected.")
 
-        similarity = embedder.similarity(emb1, emb2)
-        assert similarity > 0.5  # Should be relatively high
+        sim = similarity(emb1, emb2)
+        assert sim > 0.5  # Should be relatively high
 
     def test_custom_model(self):
         """Test initialization with custom model name."""

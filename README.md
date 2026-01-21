@@ -18,8 +18,9 @@ uv sync
 
 ## Usage
 
+Run tests
 ```bash
-uv run python main.py
+uv run pytest -x tests/unit/
 ```
 
 ## Architecture
