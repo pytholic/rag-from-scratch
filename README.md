@@ -14,13 +14,20 @@ documents → chunk → embed → store → query → retrieve → generate
 
 ```bash
 uv sync
+cp .env.example .env  # Add GEMINI_API_KEY if using Gemini
 ```
 
 ## Usage
 
-Run tests
 ```bash
-uv run pytest -x tests/unit/
+# Run with Ollama (default)
+uv run python main.py
+
+# Run with Gemini
+uv run python main.py --provider gemini
+
+# Run tests
+uv run pytest tests/
 ```
 
 ## Architecture
@@ -28,9 +35,9 @@ uv run pytest -x tests/unit/
 | Module | Responsibility |
 |--------|----------------|
 | `chunker.py` | Split documents into overlapping chunks |
-| `embedder.py` | Get embeddings from OpenAI API |
+| `embedder.py` | Get embeddings via sentence-transformers |
 | `vectorstore.py` | Store/search vectors with NumPy |
-| `generator.py` | Generate responses with context |
+| `generator.py` | Generate responses (Ollama/Gemini) |
 | `pipeline.py` | Orchestrate the RAG flow |
 
 ## Goals
